@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>16x16 LED Matrix</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
+
+        .preview {
+            width: 512px;
+            height: 512px;
+            image-rendering: pixelated;
+            border: 1px solid white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>LED Matrix Control</h1>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" accept=".png" required>
+        <br><br>
+        <label for="frame_delay">Frame delay (seconds) for stacked images:</label>
+        <input type="number" step="0.01" min="0" name="frame_delay" value="0.5">
+        <br>
+        <label for="effect">Effect:</label>
+        <select name="effect" id="effect">
+            <option value="simple" {% if effect=='simple' %}selected{% endif %}>Simple</option>
+            <option value="scroll" {% if effect=='scroll' %}selected{% endif %}>Scroll</option>
+            <option value="fade" {% if effect=='fade' %}selected{% endif %}>Fade</option>
+        </select>
+        <br><br>
+        <button type="submit">Upload & Display PNG</button>
+    </form>
+
+    <form action="/off" method="get">
+        <button type="submit">Turn Off</button>
+    </form>
+
+    {% if filename %}
+    <h2>Preview:</h2>
+    <img src="{{ url_for('uploaded_file', filename=filename) }}" class="preview" alt="Preview Image">
+    <p>Effect: {{ effect|capitalize }}</p>
+    {% endif %}
+</body>
+
+</html>
